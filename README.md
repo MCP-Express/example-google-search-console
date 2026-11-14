@@ -26,12 +26,31 @@ Locally, put them in `.env` (see `.env.example`). On MCP Express, set them in th
    service account, then **Keys → Add key → Create new key → JSON** to download its key.
 3. In [Search Console](https://search.google.com/search-console), open your property, go to
    **Settings → Users and permissions** and add the key's `client_email` as a **Restricted** user.
-4. Use the key file's contents as the value (on one line in `.env`).
+4. Use the key file's contents as the value. In `.env`, put the raw JSON on one line, wrapped in
+   single quotes, and keep the `\n` in `private_key` as they are (don't escape the JSON):
+
+   ```
+   GSC_SERVICE_ACCOUNT_JSON='{"type":"service_account","private_key":"-----BEGIN PRIVATE KEY-----\nMIIEv...\n-----END PRIVATE KEY-----\n","client_email":"gsc-reader@my-project.iam.gserviceaccount.com",...}'
+   ```
+
+   This prints your key file on one line:
+
+   ```bash
+   node -e 'console.log(JSON.stringify(require(process.argv[1])))' ./path/to/key.json
+   ```
+
+   On MCP Express, paste the file contents into **Environment Secrets** as they are, without quotes.
 
 ### Getting `GSC_SITE_URL`
 
 The property name as shown in Search Console: `sc-domain:example.com` for a domain property, or
 the full URL such as `https://www.example.com/` for a URL-prefix property.
+
+## Check your setup
+
+Run `npm run check`. It signs in with `GSC_SERVICE_ACCOUNT_JSON`, lists the Search Console
+properties the service account can access, and confirms `GSC_SITE_URL` is one of them. If a step
+fails, the message says what to fix.
 
 ## Deploy
 
