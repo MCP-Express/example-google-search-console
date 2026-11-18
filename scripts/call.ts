@@ -11,7 +11,7 @@ try {
   // no .env: fine
 }
 
-const entry = await import("../src/tools.js");
+const entry = await import("../src/mcp.js");
 
 const [name, json = "{}"] = process.argv.slice(2);
 const tools = Object.values(entry as Record<string, unknown>).filter(isTool) as AnyTool[];

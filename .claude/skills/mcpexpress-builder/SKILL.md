@@ -6,13 +6,13 @@ description: Create, edit or test MCP tools in an MCP Express project (defineToo
 # Building tools for MCP Express
 
 This project serves MCP tools. Each tool is a `defineTool({ ... })` from `@mcpexpress/core`,
-exported from `src/tools.ts`. MCP Express installs the dependencies, bundles `src/tools.ts` and
+exported from `src/mcp.ts`. MCP Express installs the dependencies, bundles `src/mcp.ts` and
 serves every exported tool to AI clients.
 
 ## Project layout
 
 ```
-src/tools.ts          entry file: export every tool from here
+src/mcp.ts          entry file: export every tool from here
 src/tools/<name>.ts   one tool per file
 scripts/call.ts       npm run call -- <tool> '<json>'   runs a tool locally
 scripts/package.mjs   npm run package                   builds the zip to upload
@@ -21,7 +21,7 @@ scripts/package.mjs   npm run package                   builds the zip to upload
 ## Adding a tool
 
 1. Create `src/tools/<kebab-name>.ts` exporting a camelCase const from `defineTool`.
-2. Add `export { myTool } from "./tools/<kebab-name>.js";` to `src/tools.ts` (keep the `.js`
+2. Add `export { myTool } from "./tools/<kebab-name>.js";` to `src/mcp.ts` (keep the `.js`
    extension: the project is ESM).
 3. Need a package? `npm install <package>`. Any pure-JavaScript npm package works. Packages
    with native binaries (sharp, bcrypt, better-sqlite3, canvas) or an install step (Prisma,
@@ -118,7 +118,7 @@ Tools using it list `"DATABASE_URL"` in `env`. Always pass SQL values as paramet
 - [ ] `npm run typecheck` passes.
 - [ ] `npm run call -- <tool_name> '<json>'` returns the expected result (a tool that needs
       secrets the user hasn't provided: say which variables to put in `.env`, don't invent values).
-- [ ] The tool is exported from `src/tools.ts`.
+- [ ] The tool is exported from `src/mcp.ts`.
 - [ ] Every input field has `.describe()`, and `env` lists every required variable.
 - [ ] Tell the user to run `npm run package` and upload the zip in the server's **Tools** tab,
       and to add any new `env` variables in **Environment Secrets**.
